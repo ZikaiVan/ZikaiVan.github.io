@@ -4,40 +4,52 @@
     <title>NPC-1</title>
     <url>/posts/24148.html</url>
     <content><![CDATA[<hr>
-<h1 id="3-SAT-gt-SubsetSum"><a href="#3-SAT-gt-SubsetSum" class="headerlink" title="3-SAT -&gt; SubsetSum"></a>3-SAT -&gt; SubsetSum</h1><h2 id="What-and-How"><a href="#What-and-How" class="headerlink" title="What and How"></a>What and How</h2><p>描述：给定n个数$W=\{w_1,…,w_n\}$和整数$N$，是否存在一个子集$S$，其中所有元素的和等于N。此外，由于整数是二进制存储的，其规模是$log_2(|W|)$，因此归约必须在二进制编码下是poly-time的</p>
+<h1>3-SAT -&gt; SubsetSum</h1>
+<h2 id="What-and-How">What and How</h2>
+<p>描述：给定n个数$W={w_1,…,w_n}$和整数$N$，是否存在一个子集$S$，其中所有元素的和等于N。此外，由于整数是二进制存储的，其规模是$log_2(|W|)$，因此归约必须在二进制编码下是poly-time的</p>
 <p>构造：给定有$n$个变量、$k$个子句的$\Phi$，可以构造$2n+2k$个十进制整数，每个整数有$n+k$位</p>
 <ul>
-<li><p>因此，可以构造一个$(2n+2k)\times(n+k)$的表格，并分为4个象限</p>
+<li>
+<p>因此，可以构造一个$(2n+2k)\times(n+k)$的表格，并分为4个象限</p>
 <ul>
-<li><p>前$2n$行分别代表$2n$个literals，后$2k$行是松弛变量行；前$n$列分别代表是否选择某个variable，后$k$列代表clause的取值</p>
+<li>
+<p>前$2n$行分别代表$2n$个literals，后$2k$行是松弛变量行；前$n$列分别代表是否选择某个variable，后$k$列代表clause的取值</p>
 </li>
-<li><p>第一象限(前$2n$行、后$k$列)：某clause中是否存在某个literal，若有则为1，反之为0</p>
+<li>
+<p>第一象限(前$2n$行、后$k$列)：某clause中是否存在某个literal，若有则为1，反之为0</p>
 </li>
-<li>第二象限(前$2n$行，前$n$列)：某literal是否由某个variable得来，若是则为1，反之为0</li>
-<li>第三象限(后$2k$行，前$n$列)：构造为0</li>
-<li>第四象限(后$2k$行，后$k$列)：松弛变量区域，每2行对应1个clause列，使得某一列所选数字的加和与对应$N$的整数位相等，后面的例子会详细解释</li>
+<li>
+<p>第二象限(前$2n$行，前$n$列)：某literal是否由某个variable得来，若是则为1，反之为0</p>
+</li>
+<li>
+<p>第三象限(后$2k$行，前$n$列)：构造为0</p>
+</li>
+<li>
+<p>第四象限(后$2k$行，后$k$列)：松弛变量区域，每2行对应1个clause列，使得某一列所选数字的加和与对应$N$的整数位相等，后面的例子会详细解释</p>
+</li>
 </ul>
 </li>
 </ul>
-<h2 id="E-g"><a href="#E-g" class="headerlink" title="E.g."></a>E.g.</h2><p>$\Phi=C_1\land C_2\land C_3=(\overline{x}\lor y\lor z)\land(x\lor \overline{y}\lor z)\land(\overline{x}\lor \overline{y}\lor \overline{z})$；</p>
+<h2 id="E-g">E.g.</h2>
+<p>$\Phi=C_1\land C_2\land C_3=(\overline{x}\lor y\lor z)\land(x\lor \overline{y}\lor z)\land(\overline{x}\lor \overline{y}\lor \overline{z})$；</p>
 <ul>
 <li>为我们的表格在最后增加1行和1列，分别表示我们的目标值$N$和$W$集合的所有元素</li>
 <li>关于$N$的前$n$位：由于1个variable的真值取值唯一(非真即假)，因此$N$的前$n$位都是1</li>
-<li>关于$N$的前$k$位：由于clause中literal的取值方式很多，因此我们需要松弛变量来保证：无论1个clause里literal取值是什么样的。当clause的结果为1时，总能通过改变松弛变量的选取来固定最后的加和。参照Table 1，我们对此作出如下的额外说明：<ul>
+<li>关于$N$的前$k$位：由于clause中literal的取值方式很多，因此我们需要松弛变量来保证：无论1个clause里literal取值是什么样的。当clause的结果为1时，总能通过改变松弛变量的选取来固定最后的加和。参照Table 1，我们对此作出如下的额外说明：
+<ul>
 <li>对于$C_1$列，如果前面$(\overline{x}\lor y\lor z)$有3个literals为真，则我们会选择$\neg x$行、$y$行、$z$行，此时求得所选数字加和为$1+1+1=3$，比4少1，因此额外选择$s_1$行 ，从而使得该列所选数字为4；</li>
 <li>如果有2个literals为真，suppose $y,z$，则我们会选择$y$行、$z$行，此时所选数字为$1+1=2$，因此我们额外选择$s_1’$行，使得加和为4</li>
 <li>如果只有1个literal为真，则同时额外选择$s_1$和$s_1’$，从而让最后的加和为4</li>
 </ul>
 </li>
-<li>松弛变量取值有如下要求：<ul>
+<li>松弛变量取值有如下要求：
+<ul>
 <li>Table 1第四象限内，我们既可以取$\set{1,2}$，也可以取$\set{1,1}$(但需要把$4$改为$3$，因为随着松弛变量的改变，$N$后$k$位的取值也要发生改变)。</li>
 <li>松弛变量的取值不能让该列的最大加和产生进位</li>
 </ul>
 </li>
 </ul>
 <center style="font-size:14px;color:#000000">Table 1. 所构造的表格</center>
-
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -180,18 +192,20 @@
 <td style="text-align:center">4</td>
 <td style="text-align:center">4</td>
 <td style="text-align:center">4</td>
+<td style="text-align:right"></td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>Claim：$\Phi$ 可满足 iff 存在一个有解的subset sum问题</p>
 <ul>
-<li><p>-&gt;：给定$\Phi$，可以构造并根据literal和松弛变量的选择情况来对应选择子集$S$的元素，使得子集和为$W$</p>
+<li>
+<p>-&gt;：给定$\Phi$，可以构造并根据literal和松弛变量的选择情况来对应选择子集$S$的元素，使得子集和为$W$</p>
 <ul>
 <li>对于Table 1的情况，我们可以选择$S=\set{x,y,\neg z,s_1,s_1’,s_2,s_2’,s_3,s_3’}$，使得$Sum(S)=100,010+10,100+1,001+100+200+10+20+1+2=111,444$</li>
 </ul>
 </li>
-<li><p>&lt;-：对于一些<strong>特定的</strong>subset sum instance，我们能按这种办法构造出3-SAT问题，从而：</p>
+<li>
+<p>&lt;-：对于一些<strong>特定的</strong>subset sum instance，我们能按这种办法构造出3-SAT问题，从而：</p>
 <ul>
 <li>每个variable让$S$必须选择$x$或$\neg x$为真，其它variable同理；</li>
 <li>每个clause让$S$必须选择让至少1个literal为真；</li>
